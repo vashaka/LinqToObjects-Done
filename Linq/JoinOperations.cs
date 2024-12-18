@@ -28,10 +28,14 @@ namespace Linq
                 "Dairy Products",
                 "Seafood"
             };
-
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            var result = categories.Join(
+                products,
+                category => category,
+                product => product.Category,
+                (category, product) => (category, product.ProductName)
+            );
+            return result;
         }
 
         /// <summary>
@@ -48,10 +52,15 @@ namespace Linq
                 "Dairy Products",
                 "Seafood"
             };
-
             List<Product> products = Products.ProductList;
+            var result = categories.GroupJoin(
+                products,
+                category => category,
+                product => product.Category,
+                (category, productGroup) => (category, productGroup)
+            );
 
-            throw new NotImplementedException();
+            return result.Select(x => (x.category, x.productGroup.AsEnumerable()));
         }
 
         /// <summary>
@@ -73,7 +82,12 @@ namespace Linq
 
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var result = from category in categories
+                         join product in products on category equals product.Category into productGroup
+                         from product in productGroup.DefaultIfEmpty()
+                         select (category, product?.ProductName ?? "(No products)");
+
+            return result;
         }
     }
 }

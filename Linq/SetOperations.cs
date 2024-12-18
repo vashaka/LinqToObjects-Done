@@ -5,13 +5,6 @@ using Linq.DataSources;
 
 namespace Linq
 {
-    /// <summary>
-    /// Considers the use of set operations (methods 'Distinct', 'Union', 'Intersect', and 'Except') in LINQ queries.
-    /// Set operation definition:
-    /// <see cref="IEnumerable{TSource}"/>, <see cref="IEnumerable{TSource}"/> → <see cref="IEnumerable{TSource}"/>
-    /// Set operations refer to query operations that produce a result set that is based on the presence or
-    /// absence of equivalent elements within the same or separate collections (or sets).
-    /// </summary>
     public static class SetOperations
     {
         /// <summary>
@@ -22,7 +15,7 @@ namespace Linq
         {
             int[] numbers = { 2, 2, 3, 5, 5 };
 
-            throw new NotImplementedException();
+            return numbers.Distinct();
         }
 
         /// <summary>
@@ -33,7 +26,7 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            return products.Select(p => p.Category).Distinct();
         }
 
         /// <summary>
@@ -45,7 +38,7 @@ namespace Linq
             int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
             int[] numbersB = { 1, 3, 5, 7, 8 };
 
-            throw new NotImplementedException();
+            return numbersA.Union(numbersB);
         }
 
         /// <summary>
@@ -57,7 +50,10 @@ namespace Linq
             List<Product> products = Products.ProductList;
             List<Customer> customers = Customers.CustomerList;
 
-            throw new NotImplementedException();
+            var productFirstLetters = products.Select(p => p.ProductName[0]);
+            var customerFirstLetters = customers.Select(c => c.CompanyName[0]);
+
+            return productFirstLetters.Union(customerFirstLetters);
         }
 
         /// <summary>
@@ -69,7 +65,7 @@ namespace Linq
             int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
             int[] numbersB = { 1, 3, 5, 7, 8 };
 
-            throw new NotImplementedException();
+            return numbersA.Intersect(numbersB);
         }
 
         /// <summary>
@@ -81,7 +77,10 @@ namespace Linq
             List<Product> products = Products.ProductList;
             List<Customer> customers = Customers.CustomerList;
 
-            throw new NotImplementedException();
+            var productFirstLetters = products.Select(p => p.ProductName[0]);
+            var customerFirstLetters = customers.Select(c => c.CompanyName[0]);
+
+            return productFirstLetters.Intersect(customerFirstLetters);
         }
 
         /// <summary>
@@ -93,7 +92,7 @@ namespace Linq
             int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
             int[] numbersB = { 1, 3, 5, 7, 8 };
 
-            throw new NotImplementedException();
+            return numbersA.Except(numbersB);
         }
 
         /// <summary>
@@ -105,7 +104,10 @@ namespace Linq
             List<Product> products = Products.ProductList;
             List<Customer> customers = Customers.CustomerList;
 
-            throw new NotImplementedException();
+            var productFirstLetters = products.Select(p => p.ProductName[0]);
+            var customerFirstLetters = customers.Select(c => c.CompanyName[0]);
+
+            return productFirstLetters.Except(customerFirstLetters);
         }
     }
 }

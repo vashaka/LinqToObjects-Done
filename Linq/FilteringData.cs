@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Linq.DataSources;
 
 namespace Linq
 {
-    /// <summary>
-    /// Considers the use of filter operations (method 'Where' and 'where' keywords) in LINQ queries.
-    /// Filtering : <see cref="IEnumerable{TSource}"/> → <see cref="IEnumerable{TSource}"/>
-    /// Filtering refers to the operation of restricting the result set to contain only
-    /// those elements that satisfy a specified condition. It is also known as selection.
-    /// </summary>
     public static class FilteringData
     {
         /// <summary>
@@ -19,8 +14,7 @@ namespace Linq
         public static IEnumerable<int> LowNumbers()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Where(x => x < 5);
         }
 
         /// <summary>
@@ -30,8 +24,7 @@ namespace Linq
         public static IEnumerable<Product> ProductsOutOfStock()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products.Where(p => p.UnitsInStock == 0);
         }
 
         /// <summary>
@@ -41,8 +34,7 @@ namespace Linq
         public static IEnumerable<Product> ExpensiveProductsInStock()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products.Where(p => p.UnitsInStock > 0 && p.UnitPrice > 50);
         }
 
         /// <summary>
@@ -52,8 +44,7 @@ namespace Linq
         public static IEnumerable<string> IndexedWhere()
         {
             string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-
-            throw new NotImplementedException();
+            return digits.Where((digit, index) => digit.Length < index);
         }
     }
 }

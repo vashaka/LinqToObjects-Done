@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Linq.DataSources;
 
 namespace Linq
@@ -19,19 +20,21 @@ namespace Linq
         public static IEnumerable<int> Take()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Take(3);
         }
 
         /// <summary>
         /// Gets the first 3 orders from customers in Washington with date of orders. 
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<(string customerId, int orderId, DateTime orderDate)> CustomersTake()
+        public static IEnumerable<(int orderId, DateTime orderDate)> CustomersTake()
         {
             List<Customer> customers = Customers.CustomerList;
-
-            throw new NotImplementedException();
+            return customers
+                .Where(c => c.City == "Washington")
+                .SelectMany(c => c.Orders)
+                .Take(3)
+                .Select(o => (o.OrderId, o.OrderDate));
         }
 
         /// <summary>
@@ -41,19 +44,21 @@ namespace Linq
         public static IEnumerable<int> Skip()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Skip(4);
         }
 
         /// <summary>
         /// Gets all but the first 2 orders from customers in Washington.
         /// </summary>
         /// <returns>All but the first 2 orders from customers in Washington.</returns>
-        public static IEnumerable<(string customerId, int orderId, DateTime orderDate)> CustomersSkip()
+        public static IEnumerable<(int orderId, DateTime orderDate)> CustomersSkip()
         {
             List<Customer> customers = Customers.CustomerList;
-
-            throw new NotImplementedException();
+            return customers
+                .Where(c => c.City == "Washington")
+                .SelectMany(c => c.Orders)
+                .Skip(2)
+                .Select(o => (o.OrderId, o.OrderDate));
         }
 
         /// <summary>
@@ -63,8 +68,7 @@ namespace Linq
         public static IEnumerable<int> TakeWhile()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.TakeWhile(n => n < 6);
         }
 
         /// <summary>
@@ -74,8 +78,7 @@ namespace Linq
         public static IEnumerable<int> IndexedTakeWhile()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.TakeWhile((n, i) => n >= i);
         }
 
         /// <summary>
@@ -85,8 +88,7 @@ namespace Linq
         public static IEnumerable<int> SkipWhile()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.SkipWhile(n => n % 3 != 0);
         }
 
         /// <summary>
@@ -96,8 +98,7 @@ namespace Linq
         public static IEnumerable<int> IndexedSkipWhile()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.SkipWhile((n, i) => n >= i);
         }
     }
 }

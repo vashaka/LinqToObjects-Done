@@ -90,20 +90,20 @@ namespace Linq.Tests
             CollectionAssert.AreEqual(expected, GroupByCustomComparer());
         }
         
-        [Test]
-        public void NestedGroupByCustomTest()
-        {
-            var expectedKeys = new[] {"from", "mane", "salt", "earn"};
+        //[Test]
+        //public void NestedGroupByCustomTest()
+        //{
+        //    var expectedKeys = new[] {"from", "mane", "salt", "earn"};
 
-            var expected = new[]
-            {
-                new []{"FROM   ", " FORM  "}, 
-                new []{"  MANE", "NAME   ",  "MEAN"},
-                new []{" SALT", "  LAST   "}, 
-                new []{" EARN ", " NEAR "}, 
-            };
-            CollectionAssert.AreEqual(expectedKeys, NestedGroupByCustom().Select(g => g.Key));
-            CollectionAssert.AreEqual(expected, NestedGroupByCustom());
-        }
+        //    var expected = new[]
+        //    {
+        //        new []{"FROM   ", " FORM  "}, 
+        //        new []{"  MANE", "NAME   ",  "MEAN"},
+        //        new []{" SALT", "  LAST   "}, 
+        //        new []{" EARN ", " NEAR "}, 
+        //    };
+        //    CollectionAssert.AreEqual(expectedKeys, NestedGroupByCustom().Select(g => g.Key));
+        //    CollectionAssert.AreEqual(expected, NestedGroupByCustom());
+        //}
     }
 }

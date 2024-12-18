@@ -23,7 +23,7 @@ namespace Linq
             var wordsA = new[] { "cherry", "apple", "blueberry" };
             var wordsB = new[] { "cherry", "apple", "blueberry" };
 
-            throw new NotImplementedException();
+            return wordsA.SequenceEqual(wordsB);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Linq
             var wordsA = new[] { "cherry", "apple", "blueberry" };
             var wordsB = new[] { "apple", "blueberry", "cherry" };
 
-            throw new NotImplementedException();
+            return wordsA.SequenceEqual(wordsB);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Linq
         {
             string[] words = { "believe", "relief", "receipt", "field" };
 
-            throw new NotImplementedException();
+            return words.Any(word => word.Contains("ei"));
         }
 
         /// <summary>
@@ -57,7 +57,12 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var result = products
+                .GroupBy(product => product.Category)
+                .Where(group => group.Any(product => product.UnitsInStock == 0))
+                .Select(group => (group.Key, group.AsEnumerable()));
+
+            return result;
         }
 
         /// <summary>
@@ -68,9 +73,13 @@ namespace Linq
         {
             int[] numbers = { 1, 11, 3, 19, 41, 65, 19 };
 
-            throw new NotImplementedException();
+            return numbers.All(n => n % 2 != 0);
         }
 
+        /// <summary>
+        /// Creates product categories with more than zero units in stock. 
+        /// </summary>
+        /// <returns>Grouped product categories with more than zero units in stock.</returns>
         /// <summary>
         /// Creates product categories with more than zero units in stock. 
         /// </summary>
@@ -79,7 +88,12 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            var result = products
+                .GroupBy(product => product.Category)
+                .Where(group => group.All(product => product.UnitsInStock > 0))
+                .Select(group => (group.Key, group.AsEnumerable()));
+
+            return result;
         }
 
         /// <summary>
@@ -90,7 +104,7 @@ namespace Linq
         {
             int[] numbers = { 2, 3, 4 };
 
-            throw new NotImplementedException();
+            return numbers.Contains(3);
         }
     }
 }

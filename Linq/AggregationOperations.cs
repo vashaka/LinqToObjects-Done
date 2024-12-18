@@ -20,8 +20,7 @@ namespace Linq
         public static int CountNumbers()
         {
             int[] numbers = { 2, 2, 3, 5, 5 };
-
-            throw new NotImplementedException();
+            return numbers.Count();
         }
 
         /// <summary>
@@ -31,8 +30,7 @@ namespace Linq
         public static int CountOddNumbers()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Count(n => n % 2 != 0);
         }
 
         /// <summary>
@@ -42,9 +40,10 @@ namespace Linq
         public static IEnumerable<(string customerId, int orderCount)> CustomersOrdersCount()
         {
             List<Customer> customers = Customers.CustomerList;
-
-            throw new NotImplementedException();
+            var result = customers.Select(c => new { c.CustomerId, OrderCount = c.Orders.Count() }).ToList();
+            return result.Select(r => (r.CustomerId, r.OrderCount));
         }
+
 
         /// <summary>
         /// Defines a sequence of categories and how many products each has.
@@ -53,8 +52,9 @@ namespace Linq
         public static IEnumerable<(string category, int productCount)> ProductsInCategoryCount()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products
+                .GroupBy(p => p.Category)
+                .Select(g => (g.Key, g.Count()));
         }
 
         /// <summary>
@@ -64,8 +64,7 @@ namespace Linq
         public static int Sum()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Sum();
         }
 
         /// <summary>
@@ -75,8 +74,7 @@ namespace Linq
         public static int SumByLength()
         {
             string[] words = { "cherry", "apple", "blueberry" };
-
-            throw new NotImplementedException();
+            return words.Sum(w => w.Length);
         }
 
         /// <summary>
@@ -86,8 +84,9 @@ namespace Linq
         public static IEnumerable<(string category, int totalUnitsInStock)> TotalUnitsInStock()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products
+                .GroupBy(p => p.Category)
+                .Select(g => (g.Key, g.Sum(p => p.UnitsInStock)));
         }
 
         /// <summary>
@@ -97,8 +96,7 @@ namespace Linq
         public static int Min()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Min();
         }
 
         /// <summary>
@@ -108,8 +106,7 @@ namespace Linq
         public static int MinByLength()
         {
             string[] words = { "cherry", "apple", "blueberry" };
-
-            throw new NotImplementedException();
+            return words.Min(w => w.Length);
         }
 
         /// <summary>
@@ -119,8 +116,9 @@ namespace Linq
         public static IEnumerable<(string category, decimal cheapestPrice)> GetCheapestPrice()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products
+                .GroupBy(p => p.Category)
+                .Select(g => (g.Key, g.Min(p => p.UnitPrice)));
         }
 
         /// <summary>
@@ -130,8 +128,7 @@ namespace Linq
         public static int Max()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Max();
         }
 
         /// <summary>
@@ -141,8 +138,7 @@ namespace Linq
         public static int MaxByLength()
         {
             string[] words = { "cherry", "apple", "blueberry" };
-
-            throw new NotImplementedException();
+            return words.Max(w => w.Length);
         }
 
         /// <summary>
@@ -152,8 +148,9 @@ namespace Linq
         public static IEnumerable<(string category, decimal mostExpensivePrice)> GetMostExpensivePrice()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products
+                .GroupBy(p => p.Category)
+                .Select(g => (g.Key, g.Max(p => p.UnitPrice)));
         }
 
         /// <summary>
@@ -163,8 +160,7 @@ namespace Linq
         public static double Average()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Average();
         }
 
         /// <summary>
@@ -174,8 +170,7 @@ namespace Linq
         public static double AverageByLength()
         {
             string[] words = { "cherry", "apple", "blueberry" };
-
-            throw new NotImplementedException();
+            return words.Average(w => w.Length);
         }
 
         /// <summary>
@@ -185,8 +180,9 @@ namespace Linq
         public static IEnumerable<(string Category, decimal averagePrice)> AveragePrice()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products
+                .GroupBy(p => p.Category)
+                .Select(g => (g.Key, g.Average(p => p.UnitPrice)));
         }
 
         /// <summary>
@@ -196,8 +192,7 @@ namespace Linq
         public static double Aggregate()
         {
             double[] doubles = { 1.7, 2.3, 1.9, 4.1, 2.9 };
-
-            throw new NotImplementedException();
+            return doubles.Aggregate((total, next) => total * next);
         }
 
         /// <summary>
@@ -207,10 +202,10 @@ namespace Linq
         public static double SeededAggregate()
         {
             double startBalance = 100.0;
-
             int[] attemptedWithdrawals = { 20, 10, 40, 50, 10, 70, 30 };
 
-            throw new NotImplementedException();
+            return attemptedWithdrawals.Aggregate(startBalance, (balance, withdrawal) =>
+                balance - withdrawal >= 0 ? balance - withdrawal : balance);
         }
     }
 }

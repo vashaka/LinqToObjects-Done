@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Linq.DataSources;
 
 namespace Linq
 {
-    /// <summary>
-    /// Considers the use of projection operations (methods 'Select', and 'SelectMany' or 'select' keyword) in LINQ queries.
-    /// Projecting: <see cref="IEnumerable{TSource}"/> → <see cref="IEnumerable{TResult}"/>
-    /// Projection refers to the operation of transforming an object into a new form that
-    /// often consists only of those properties that will be subsequently used.
-    /// </summary>
     public static class ProjectionOperations
     {
         /// <summary>
@@ -19,8 +14,7 @@ namespace Linq
         public static IEnumerable<int> Select()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Select(n => n + 1);
         }
 
         /// <summary>
@@ -30,8 +24,7 @@ namespace Linq
         public static IEnumerable<string> SelectProperty()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products.Select(p => p.ProductName);
         }
 
         /// <summary>
@@ -42,8 +35,7 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-
-            throw new NotImplementedException();
+            return numbers.Select(n => strings[n]);
         }
 
         /// <summary>
@@ -53,8 +45,7 @@ namespace Linq
         public static IEnumerable<(string upper, string lower)> SelectByCase()
         {
             string[] words = { "aPPLE", "BlUeBeRrY", "cHeRry" };
-
-            throw new NotImplementedException();
+            return words.Select(w => (w.ToUpper(), w.ToLower()));
         }
 
         /// <summary>
@@ -64,10 +55,11 @@ namespace Linq
         public static IEnumerable<(string digit, bool even)> SelectEvenOrOddNumbers()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-            string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-
-            throw new NotImplementedException();
+            string[] numberWords = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+            return numbers
+                .Select(num => (numberWords[num], num % 2 == 0));
         }
+
 
         /// <summary>
         /// Produces a sequence containing some properties of Products, including ProductName, Category and UnitPrice.
@@ -76,8 +68,7 @@ namespace Linq
         public static IEnumerable<(string productName, string category, decimal price)> SelectPropertySubset()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products.Select(p => (p.ProductName, p.Category, p.UnitPrice));
         }
 
         /// <summary>
@@ -87,8 +78,7 @@ namespace Linq
         public static IEnumerable<(int number, bool inPlace)> SelectWithIndex()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Select((n, index) => (n, n == index));
         }
 
         /// <summary>
@@ -99,8 +89,7 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
             string[] digits = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-
-            throw new NotImplementedException();
+            return numbers.Where(n => n < 5).Select(n => digits[n]);
         }
 
         /// <summary>
@@ -111,8 +100,7 @@ namespace Linq
         {
             int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
             int[] numbersB = { 1, 3, 5, 7, 8 };
-
-            throw new NotImplementedException();
+            return numbersA.SelectMany(a => numbersB.Where(b => a < b), (a, b) => (a, b));
         }
 
         /// <summary>
@@ -122,8 +110,8 @@ namespace Linq
         public static IEnumerable<(string customerId, int orderId, decimal total)> SelectFromChildSequence()
         {
             List<Customer> customers = Customers.CustomerList;
-
-            throw new NotImplementedException();
+            return customers.SelectMany(c => c.Orders.Where(o => o.Total < 500.00m),
+                                        (c, o) => (c.CustomerId, o.OrderId, o.Total));
         }
 
         /// <summary>
@@ -135,7 +123,15 @@ namespace Linq
             List<Customer> customers = Customers.CustomerList;
             var dateTime = new DateTime(1998, 1, 1);
 
-            throw new NotImplementedException();
+            return customers
+                .Where(c => c.Orders.Any(o => o.OrderDate >= dateTime))
+                .SelectMany(c => c.Orders
+                    .Where(o => o.OrderDate >= dateTime)
+                    .Select(o => (
+                        customerId: c.CustomerId,
+                        orderId: o.OrderId,
+                        orderDate: o.OrderDate.ToString("dd-MMM-yy")
+                    )));
         }
 
         /// <summary>
@@ -145,8 +141,8 @@ namespace Linq
         public static IEnumerable<(string customerId, int orderId, decimal totalValue)> SelectManyWhereAssignment()
         {
             List<Customer> customers = Customers.CustomerList;
-
-            throw new NotImplementedException();
+            return customers.SelectMany(c => c.Orders.Where(o => o.Total > 2000.00m),
+                                        (c, o) => (c.CustomerId, o.OrderId, o.Total));
         }
 
         /// <summary>
@@ -158,8 +154,9 @@ namespace Linq
             List<Customer> customers = Customers.CustomerList;
             DateTime cutoffDate = new DateTime(1997, 1, 1);
             string region = "WA";
-
-            throw new NotImplementedException();
+            return customers.Where(c => c.Region == region)
+                            .SelectMany(c => c.Orders.Where(o => o.OrderDate >= cutoffDate),
+                                        (c, o) => (c.CustomerId, o.OrderId));
         }
 
         /// <summary>
@@ -169,8 +166,8 @@ namespace Linq
         public static IEnumerable<string> IndexedSelectMany()
         {
             List<Customer> customers = Customers.CustomerList;
-
-            throw new NotImplementedException();
+            return customers.SelectMany((c, index) => c.Orders.Select(o =>
+                $"Customer #{index + 1} has an order with OrderID {o.OrderId}"));
         }
     }
 }

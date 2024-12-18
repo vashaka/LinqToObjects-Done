@@ -21,7 +21,9 @@ namespace Linq
         {
             string[] words = { "blueberry", "chimpanzee", "abacus", "banana", "apple", "cheese" };
 
-            throw new NotImplementedException();
+            return words
+                .GroupBy(word => word.Trim()[0])
+                .OrderBy(group => group.Key);
         }
 
         /// <summary>
@@ -32,7 +34,9 @@ namespace Linq
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            throw new NotImplementedException();
+            return numbers
+                .GroupBy(number => number % 5)
+                .Select(group => (group.Key, group.AsEnumerable()));
         }
 
         /// <summary>
@@ -43,7 +47,10 @@ namespace Linq
         {
             List<Product> products = Products.ProductList;
 
-            throw new NotImplementedException();
+            return products
+                .GroupBy(product => product.Category)
+                .Where(group => group.Count() <= 7)
+                .Select(group => (group.Key, group.Select(product => product.ProductName)));
         }
 
         /// <summary>
@@ -55,19 +62,24 @@ namespace Linq
             string[] anagrams =
                 {"from   ", "  mane", " salt", " earn ", "name   ", "  last   ", " near ", " form  ", "mean"};
 
-            throw new NotImplementedException();
+            return anagrams
+                .GroupBy(word => word.Trim(), new AnagramEqualityComparer())
+                .Select(group => group);
         }
 
         /// <summary>
         /// Partitions a list of words by custom comparer <see cref="AnagramEqualityComparer"/>.
         /// </summary>
         /// <returns>The sequences of words in upper case grouped by anagram comparer.</returns>
-        public static IEnumerable<IGrouping<string, string>> NestedGroupByCustom()
+        public static IEnumerable<IGrouping<string, string[]>> NestedGroupByCustom()
         {
             string[] anagrams =
                 {"from   ", "  mane", " salt", " earn ", "name   ", "  last   ", " near ", " form  ", "mean"};
 
-            throw new NotImplementedException();
+            return anagrams
+                .GroupBy(word => word.Trim().ToLower(), new AnagramEqualityComparer())
+                .Select(group => new { Key = group.Key, Values = group.Select(word => word.Trim().ToUpper()).ToArray() })
+                .GroupBy(x => x.Key, x => x.Values);  // Group by the Key and return the grouped values as arrays
         }
     }
 }

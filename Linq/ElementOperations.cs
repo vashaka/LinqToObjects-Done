@@ -21,8 +21,7 @@ namespace Linq
         public static Product FirstElement()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products.First(p => p.ProductId == 11);
         }
 
         /// <summary>
@@ -32,8 +31,7 @@ namespace Linq
         public static string FirstMatchingElement()
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-
-            throw new NotImplementedException();
+            return strings.First(s => s.StartsWith("o"));
         }
 
         /// <summary>
@@ -44,8 +42,7 @@ namespace Linq
         public static int MaybeFirstElement()
         {
             int[] numbers = { };
-
-            throw new NotImplementedException();
+            return numbers.FirstOrDefault();
         }
 
         /// <summary>
@@ -56,8 +53,7 @@ namespace Linq
         public static Product MaybeFirstMatchingElement()
         {
             List<Product> products = Products.ProductList;
-
-            throw new NotImplementedException();
+            return products.FirstOrDefault(p => p.ProductId == 789);
         }
 
         /// <summary>
@@ -68,8 +64,7 @@ namespace Linq
         public static int ElementAtPosition()
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
-
-            throw new NotImplementedException();
+            return numbers.Where(n => n > 5).ElementAt(1);
         }
 
         /// <summary>
@@ -79,8 +74,7 @@ namespace Linq
         public static string LastMatchingElement()
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-
-            throw new NotImplementedException();
+            return strings.Last(s => s.Contains("o"));
         }
 
         /// <summary>
@@ -91,8 +85,7 @@ namespace Linq
         public static int MaybeLastElement()
         {
             int[] numbers = { };
-
-            throw new NotImplementedException();
+            return numbers.LastOrDefault();
         }
 
         /// <summary>
@@ -103,8 +96,7 @@ namespace Linq
         public static string SingleMoreThanOneMatchingElement()
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-
-            throw new NotImplementedException();
+            return strings.Single(s => s.Contains("o"));
         }
 
         /// <summary>
@@ -115,8 +107,7 @@ namespace Linq
         public static string SingleNoMatchingElement()
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
-
-            throw new NotImplementedException();
+            return strings.Single(s => s.Contains("o"));
         }
 
         /// <summary>
@@ -127,8 +118,14 @@ namespace Linq
         public static string MaybeSingleMatchingElement()
         {
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+            var matches = strings.Where(s => s.Contains("o")).ToList();
+            if (matches.Count > 1)
+            {
+                return null;
+            }
 
-            throw new NotImplementedException();
+            return matches.SingleOrDefault();
         }
+
     }
 }
